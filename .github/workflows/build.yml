@@ -105,3 +105,20 @@ jobs:
           name: artifact
           #From this path
           path: target/data-0.0.1-SNAPSHOT.jar
+  #Deploy's job
+  deploy:
+    #Depends on build's job
+    needs: build
+    name: Deploy
+    #Run on Ubuntu using the latest version
+    runs-on: self-hosted
+    steps:
+      - name: Download JAR
+        #Download the artifact which was uploaded in the build's job
+        uses: actions/download-artifact@v2
+        with:
+          name: artifact
+      #Deploy the artifact (JAR) into windows machine
+      - name: Deploy to EB
+        run: cp data-0.0.1-SNAPSHOT.jar E:/downloads/
+      
